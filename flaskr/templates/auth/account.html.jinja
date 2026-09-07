@@ -25,10 +25,17 @@ Your account
   </table>
 
   <div class="mt-5">
-    <a href="{{ url_for('auth.change_password', id=user['id']) }}" class="btn btn-outline-primary">Change password</a>
-    <a href="{{ url_for('auth.edit_account', id=user['id']) }}" class="btn btn-outline-primary">Edit account</a>
-
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete account</button>
+    <div class="row row-cols-auto g-3">
+      <div class="col">
+        <a href="{{ url_for('auth.change_password', id=user['id']) }}" class="btn btn-outline-primary">Change password</a>
+      </div>
+      <div class="col">
+        <a href="{{ url_for('auth.edit_account', id=user['id']) }}" class="btn btn-outline-primary">Edit account</a>
+      </div>
+      <div>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete account</button>
+      </div>
+    </div>
 
     <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
       <div class="modal-dialog">
