@@ -1,6 +1,6 @@
-# Water me!
+# CultiCore
 
-A web app to track the growth progress of your little plant.
+A wep app for tracking the growth of your crops.
 
 ## Technology stack
 
