@@ -33,41 +33,43 @@ Cultivation plots
 
   {% else %}
 
-  <div class="row gy-4">
+  <div class="row gy-4 gx-lg-4 row-cols-1 row-cols-lg-2">
 
     {% for cultivation_plot in cultivation_plots %}
 
-    <div class="col-12 col-md-7 mx-auto border rounded p-3">
-      <div class="row">
-        <div class="col-4">
-          <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
+    <div class="col">
+      <div class="border rounded p-3">
+        <div class="row">
+          <div class="col-4">
+            <div class="fw-bold text-center fs-4">{{ cultivation_plot.name }}</div>
 
-          <img class="img-fluid my-1" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from the soil">
+            <img class="img-fluid my-1" src="{{ url_for('static', filename='plant_cube.png') }}" alt="A plant growing from the soil">
 
-          <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
+            <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
+          </div>
+
+          <div class="col-8 d-flex flex-column align-items-end justify-content-between">
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <th scope="row">Plants</th>
+                  <td class="whole-number">{{ cultivation_plot.number_of_plants }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Water spent (L)</th>
+                  <td class="real-number">{{ cultivation_plot.water_spent|round(2) }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Harvest (kg)</th>
+                  <td class="real-number">{{ cultivation_plot.harvest|round(2) }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <a href="{{ url_for('cultivation_plots.cultivation_plot', id=cultivation_plot.id) }}">View details</a>
+          </div>
+
         </div>
-
-        <div class="col-8 d-flex flex-column align-items-end justify-content-between">
-          <table class="table table-sm">
-            <tbody>
-              <tr>
-                <th scope="row">Plants</th>
-                <td class="whole-number">{{ cultivation_plot.number_of_plants }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Water spent (L)</th>
-                <td class="real-number">{{ cultivation_plot.water_spent|round(2) }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Harvest (kg)</th>
-                <td class="real-number">{{ cultivation_plot.harvest|round(2) }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <a href="{{ url_for('cultivation_plots.cultivation_plot', id=cultivation_plot.id) }}">View details</a>
-        </div>
-
       </div>
     </div>
 
