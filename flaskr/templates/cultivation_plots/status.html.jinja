@@ -19,45 +19,54 @@ Cultivation plot > {{ cultivation_plot.name }}
 
 {{ header(cultivation_plot) }}
 
-<main class="mt-4">
+<main class="mt-4 mt-lg-5">
 
-  <h2 class="text-center">Status</h2>
+  <div class="row row-cols-1 row-cols-lg-2 g-lg-5">
+    <div class="col col-lg-7 mx-lg-auto">
+      <h2 class="text-center">Status</h2>
 
-  <table class="table mt-3">
-    <tbody>
-      <tr>
-        <th scope="row">Plants</th>
-        <td class="whole-number">{{ cultivation_plot.number_of_plants }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Water spent (L)</th>
-        <td class="real-number">{{ cultivation_plot.water_spent|round(2) }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Harvest (kg)</th>
-        <td class="real-number">{{ cultivation_plot.harvest|round(2) }}</td>
-      </tr>
-    </tbody>
-  </table>
+      <table class="table mt-3">
+        <tbody>
+          <tr>
+            <th scope="row">Plants</th>
+            <td class="whole-number">{{ cultivation_plot.number_of_plants }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Water spent (L)</th>
+            <td class="real-number">{{ cultivation_plot.water_spent|round(2) }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Harvest (kg)</th>
+            <td class="real-number">{{ cultivation_plot.harvest|round(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <h3 class="text-center mt-4 mb-2">Harvest trends</h3>
+    <div class="col">
+      <h3 class="text-center">Harvest trends</h3>
 
-  <div>
-    <canvas id="harvest-chart"></canvas>
+      <div>
+        <canvas id="harvest-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3 class="text-center">Water expenditure trends</h3>
+
+      <div>
+        <canvas id="water-spent-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3 class="text-center">Trends in number of plants</h3>
+
+      <div>
+        <canvas id="number-of-plants-chart"></canvas>
+      </div>
+    </div>
   </div>
-
-  <h3 class="text-center mt-4 mb-2">Water expenditure trends</h3>
-
-  <div>
-    <canvas id="water-spent-chart"></canvas>
-  </div>
-
-  <h3 class="text-center mt-4 mb-2">Trends in number of plants</h3>
-
-  <div>
-    <canvas id="number-of-plants-chart"></canvas>
-  </div>
-
 </main>
 
 <script>
