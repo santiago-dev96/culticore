@@ -10,7 +10,7 @@ Edit account
 
 <h1 class="text-center">Edit account</h1>
 
-<form class="mt-5" action="{{ url_for('auth.edit_account', id=user['id']) }}" method="post">
+<form class="p-3 mt-4 border rounded" action="{{ url_for('auth.edit_account', id=user['id']) }}" method="post">
   <div class="mb-5">
     <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
     <input autofocus type="text" name="username" id="username" class="form-control" required value="{{ user['username'] }}">
