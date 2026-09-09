@@ -23,7 +23,8 @@
     {% if g.user %}
 
     <nav class="navbar navbar-expand-lg sticky-top bg-light">
-      <div class="container">
+    
+      <div class="container-fluid">
 
         <a class="navbar-brand" href="{{ url_for('cultivation_plots.index') }}">
           CultiCore
@@ -64,6 +65,7 @@
         </div>
 
       </div>
+
     </nav>
 
     {% endif %}
