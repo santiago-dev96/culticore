@@ -2,41 +2,43 @@
 
 {% macro header(cultivation_plot) -%}
 
-<header class="row">
-  <div class="col-6">
-    <h1 class="text-center mb-2">{{ cultivation_plot.name }}</h1>
+<header>
+  <div class="row">
+    <div class="col-6 col-lg-4 ms-lg-auto">
+      <h1 class="text-center mb-2">{{ cultivation_plot.name }}</h1>
       {{ dirt_cube('d-block my-3 mx-auto') }}
-    <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
-  </div>
-  <div class="col-6 d-flex flex-column justify-content-center">
-    {% include 'cultivation_plots/_nav.html.jinja' %}
-
-    <hr>
-
-    <div class="d-grid">
-      <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>
+      <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
     </div>
+    <div class="col-6 col-lg-4 me-lg-auto d-flex flex-column justify-content-center">
+      {% include 'cultivation_plots/_nav.html.jinja' %}
 
-    <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="Delete confirmation modal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            This action can't be reversed.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <form action="{{ url_for('cultivation_plots.delete_cultivation_plot', id=cultivation_plot['id']) }}" method="POST">
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+      <hr>
+
+      <div class="d-grid">
+        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>
+      </div>
+
+      <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="Delete confirmation modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              This action can't be reversed.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form action="{{ url_for('cultivation_plots.delete_cultivation_plot', id=cultivation_plot['id']) }}" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </header>
 
