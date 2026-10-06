@@ -73,7 +73,7 @@ def register():
     db = get_db()
     cursor = db.execute(
         "INSERT INTO users (username, password_hash) VALUES (?, ?)",
-        (username, generate_password_hash(password)), # type: ignore
+        (username, generate_password_hash(password, 'pbkdf2:sha256')), # type: ignore
     )
     db.commit()
     user_id = cursor.lastrowid
