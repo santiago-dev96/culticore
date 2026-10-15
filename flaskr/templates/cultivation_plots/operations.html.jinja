@@ -22,13 +22,17 @@
 
 <main class="mt-4">
 
-  <h2 class="text-center">Operations</h2>
+  <h2 class="text-center mb-4">Operations</h2>
 
-  {% for operation in operations %}
+  <div class="row justify-content-center g-4">
 
-  {{ operation_table(operation, 'border table-sm') }}
+    {% for operation in operations %}
 
-  {% endfor %}
+    {{ operation_table(operation, 'border table-sm') }}
+
+    {% endfor %}
+
+  </div>
 
 </main>
 

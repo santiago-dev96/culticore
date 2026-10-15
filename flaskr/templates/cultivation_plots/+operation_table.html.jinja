@@ -1,21 +1,23 @@
 {% macro operation_table(operation, class='') -%}
 
-<table class="table caption-top {{ class }}">
-  <caption class="timestamp">{{ operation.created_at }}</caption>
-  <tbody>
-    <tr>
-      <th scope="row">Plants</th>
-      <td class="whole-number">{{ operation.number_of_plants }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Water spent (L)</th>
-      <td class="real-number">{{ operation.water_spent|round(2) }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Harvest (kg)</th>
-      <td class="real-number">{{ operation.harvest|round(2) }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="col-12 col-sm-10 col-md-6 col-lg-4 col-xl-3">
+  <table class="table caption-top {{ class }}">
+    <caption class="timestamp">{{ operation.created_at }}</caption>
+    <tbody>
+      <tr>
+        <th scope="row">Plants</th>
+        <td class="whole-number">{{ operation.number_of_plants }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Water spent (L)</th>
+        <td class="real-number">{{ operation.water_spent|round(2) }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Harvest (kg)</th>
+        <td class="real-number">{{ operation.harvest|round(2) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 {%- endmacro %}
