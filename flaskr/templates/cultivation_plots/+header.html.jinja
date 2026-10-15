@@ -1,15 +1,15 @@
-{% from '+dirt_cube.html.jinja' import dirt_cube  %}
+{% from '+dirt_cube.html.jinja' import dirt_cube %}
 
 {% macro header(cultivation_plot) -%}
 
 <header>
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="col-6 col-lg-4 ms-lg-auto">
       <h1 class="text-center mb-2">{{ cultivation_plot.name }}</h1>
       {{ dirt_cube('d-block my-3 mx-auto') }}
       <div class="fst-italic text-center">{{ cultivation_plot.crop }}</div>
     </div>
-    <div class="col-6 col-lg-4 me-lg-auto d-flex flex-column justify-content-center">
+    <div class="col-6 col-md-3 col-lg-3 col-xl-2 me-lg-auto d-flex flex-column justify-content-center">
       {% include 'cultivation_plots/_nav.html.jinja' %}
 
       <hr>
