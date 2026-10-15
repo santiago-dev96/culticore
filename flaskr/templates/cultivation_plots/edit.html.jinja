@@ -14,25 +14,27 @@ Cultivation plot > {{ cultivation_plot.name }} > Edit
 
 <main class="mt-4">
 
-  <h2 class="mb-3 text-center">Edit cultivation plot</h2>
+  <h2 class="mb-4 text-center">Edit cultivation plot</h2>
 
-  <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.edit_cultivation_plot', id=cultivation_plot['id']) }}">
-
-    <div class="mb-3">
-      <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-      <input autofocus class="form-control" type="text" name="name" id="name" value="{{ cultivation_plot.name }}" required>
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+      <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.edit_cultivation_plot', id=cultivation_plot['id']) }}">
+        <div class="mb-3">
+          <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
+          <input autofocus class="form-control" type="text" name="name" id="name" value="{{ cultivation_plot.name }}" required>
+        </div>
+        <div class="mb-5">
+          <label class="form-label" for="crop">Crop <span class="text-danger">*</span></label>
+          <input class="form-control" type="text" value="{{ cultivation_plot.crop }}" name="crop" id="crop" required>
+          <div id="crop-help" class="form-text">Carrot, banana, potato, tomato, etc.</div>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <div class="mb-5">
-      <label class="form-label" for="crop">Crop <span class="text-danger">*</span></label>
-      <input class="form-control" type="text" value="{{ cultivation_plot.crop }}" name="crop" id="crop" required>
-      <div id="crop-help" class="form-text">Carrot, banana, potato, tomato, etc.</div>
-    </div>
-
-    <div class="d-grid">
-      <button type="submit" class="btn btn-primary">Edit</button>
-    </div>
-  </form>
 </main>
 
 {% endblock %}
