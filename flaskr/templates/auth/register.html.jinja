@@ -13,37 +13,39 @@ Register
 <main>
   <h1 class="mb-4 text-center">Create an account</h1>
 
-  <form method="POST" action="{{ url_for('auth.register') }}" class="p-4 border rounded">
-    <div class="mb-3">
-      <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+  <div class="row justify-content-center">
+    <form method="POST" action="{{ url_for('auth.register') }}" class="p-4 border rounded col-12 col-sm-10 col-md-8 col-lg-5 col-xxl-4">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+
+        {% if form %}
+
+        <input value="{{ form.get('username', '') }}" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+
+        {% else %}
+
+        <input type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+
+        {% endif %}
+      </div>
 
       {% if form %}
-
-      <input value="{{ form.get('username', '') }}" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
-
+        {{ password_input('password', 'password', 'Password <span class="text-danger">*</span>', value=form.get('password', '')) }}
       {% else %}
-
-      <input type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
-
+        {{ password_input('password', 'password', 'Password <span class="text-danger">*</span>') }}
       {% endif %}
-    </div>
 
-    {% if form %}
-      {{ password_input('password', 'password', 'Password <span class="text-danger">*</span>', value=form.get('password', '')) }}
-    {% else %}
-      {{ password_input('password', 'password', 'Password <span class="text-danger">*</span>') }}
-    {% endif %}
+      {% if form %}
+        {{ password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5, value=form.get('password_confirmation', '')) }}
+      {% else %}
+        {{ password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5) }}
+      {% endif %}
 
-    {% if form %}
-      {{ password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5, value=form.get('password_confirmation', '')) }}
-    {% else %}
-      {{ password_input('password_confirmation', 'password_confirmation', 'Password confirmation <span class="text-danger">*</span>', mb=5) }}
-    {% endif %}
-
-    <div class="d-grid">
-      <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-  </form>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+    </form>
+  </div>
 
   <p class="text-center mt-4">Already have an account? <a href="{{ url_for('auth.login') }}">Login instead</a>.</p>
 
