@@ -9,50 +9,54 @@ Your account
 {% block content %}
 
 <main>
-  <h1 class="text-center">Your account</h1>
+  <h1 class="text-center mb-5">Your account</h1>
 
-  <table class="table mt-5">
-    <tbody>
-      <tr>
-        <th scope="row">Username</th>
-        <td>{{ user['username'] }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Member since</th>
-        <td>{{ user['created_at'] }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="mt-5">
-    <div class="row row-cols-auto g-3">
-      <div class="col">
-        <a href="{{ url_for('auth.change_password', id=user['id']) }}" class="btn btn-outline-primary">Change password</a>
-      </div>
-      <div class="col">
-        <a href="{{ url_for('auth.edit_account', id=user['id']) }}" class="btn btn-outline-primary">Edit account</a>
-      </div>
-      <div>
-        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete account</button>
-      </div>
+  <div class="row justify-content-center g-4">
+    <div class="col-12 col-md-6 col-xl-4">
+      <table class="table rounded border table-sm">
+        <tbody>
+          <tr>
+            <th scope="row">Username</th>
+            <td>{{ user['username'] }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Member since</th>
+            <td>{{ user['created_at'] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="delete-modal-label">Are you sure?</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            This action can't be reversed.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <form action="{{ url_for('auth.delete_account', id=user['id']) }}" method="post">
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-          </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="d-flex flex-column">
+        <div class="mb-2">
+          <a href="{{ url_for('auth.change_password', id=user['id']) }}" class="btn btn-primary">Change password</a>
+        </div>
+        <div class="mb-2">
+          <a href="{{ url_for('auth.edit_account', id=user['id']) }}" class="btn btn-primary">Edit account</a>
+        </div>
+        <div>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="delete-modal-label">Are you sure?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          This action can't be reversed.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form action="{{ url_for('auth.delete_account', id=user['id']) }}" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
         </div>
       </div>
     </div>
