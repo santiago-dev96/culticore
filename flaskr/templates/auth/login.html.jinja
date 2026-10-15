@@ -13,27 +13,29 @@ Login
 <main>
   <h1 class="text-center mb-4">Welcome back</h1>
 
-  <form method="POST" action="{{ url_for('auth.login') }}" class="p-4 border rounded">
-    <div class="mb-3">
-      <label for="password" class="form-label">Username</label>
+  <div class="row justify-content-center">
+    <form method="POST" action="{{ url_for('auth.login') }}" class="p-4 border rounded col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+      <div class="mb-3">
+        <label for="password" class="form-label">Username</label>
+
+        {% if form %}
+          <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control" value="{{ form.get('username', '') }}">
+        {% else %}
+          <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+        {% endif %}
+      </div>
 
       {% if form %}
-        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control" value="{{ form.get('username', '') }}">
+        {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5, value=form.get('password', '')) }}
       {% else %}
-        <input autocomplete="username" type="text" name="username" id="username" required minlength="3" maxlength="50" class="form-control">
+        {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
       {% endif %}
-    </div>
 
-    {% if form %}
-      {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5, value=form.get('password', '')) }}
-    {% else %}
-      {{ password_input('password', 'password', 'Password', autocomplete='current-password', mb=5) }}
-    {% endif %}
-
-    <div class="d-grid">
-      <button type="submit" class="btn btn-primary">Login</button>
-    </div>
-  </form>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+  </div>
 
   <p class="text-center mt-4">Don't have an account? <a href="{{ url_for('auth.register') }}">Register instead</a>.</p>
 </main>
