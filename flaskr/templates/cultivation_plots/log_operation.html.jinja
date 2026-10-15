@@ -16,28 +16,32 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
 
   <h2 class="mb-3 text-center">Log operation</h2>
 
-  <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+      <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
+        <div class="mb-3">
+          <label class="form-label" for="number_of_plants">Number of plants</label>
+          <input autofocus class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants" value="0">
+          <div id="number_of_plants_help" class="form-text">Negative numbers are allowed</div>
+        </div>
 
-    <div class="mb-3">
-      <label class="form-label" for="number_of_plants">Number of plants</label>
-      <input autofocus class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants" value="0">
-      <div id="number_of_plants_help" class="form-text">Negative numbers are allowed</div>
-    </div>
+        <div class="mb-3">
+          <label class="form-label" for="water_spent">Water spent (L) <span class="text-danger">*</span></label>
+          <input class="form-control" type="number" value="0.00" step="0.01" name="water_spent" min="0" id="water_spent" required>
+        </div>
 
-    <div class="mb-3">
-      <label class="form-label" for="water_spent">Water spent (L) <span class="text-danger">*</span></label>
-      <input class="form-control" type="number" value="0.00" step="0.01" name="water_spent" min="0" id="water_spent" required>
-    </div>
+        <div class="mb-5">
+          <label class="form-label" for="harvest">Harvest (kg) <span class="text-danger">*</span></label>
+          <input class="form-control" type="number" value="0.00" step="0.01" min="0" name="harvest" id="harvest" required>
+        </div>
 
-    <div class="mb-5">
-      <label class="form-label" for="harvest">Harvest (kg) <span class="text-danger">*</span></label>
-      <input class="form-control" type="number" value="0.00" step="0.01" min="0" name="harvest" id="harvest" required>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Log</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <div class="d-grid">
-      <button type="submit" class="btn btn-primary">Log</button>
-    </div>
-  </form>
 </main>
 
 {% endblock %}
