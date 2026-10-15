@@ -32,6 +32,7 @@ def validate_password(password, password_confirmation):
         return "The password and the password confirmation must be equal"
     return None
 
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers a user account."""
