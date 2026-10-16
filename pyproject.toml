@@ -1,0 +1,10 @@
+[tool.ruff]
+target-version = "py39"
+src = ["flaskr", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"flaskr/__init__.py" = ["E402"]

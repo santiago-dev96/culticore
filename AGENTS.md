@@ -39,3 +39,4 @@ The root of the app is the `flaskr` directory.
 - Start: `bash scripts/start.sh`.
 - Initialize the database: `bash scripts/init_db.sh`.
 - Generate a secret to serve as value for the `FLASK_SECRET_KEY` environment variable in the `.env` file: `python scripts/print_secret.py`.
+- Lint: `ruff check flaskr scripts`.
