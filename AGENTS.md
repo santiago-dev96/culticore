@@ -10,7 +10,7 @@ The root of the app is the `flaskr` directory.
 - Static assets live in the `flaskr/static` directory.
 - View templates live in the `flaskr/templates` directory.
 - The templates are written in [Jinja](https://jinja.palletsprojects.com/en/stable/).
-- [Bootstrap](https://getbootstrap.com/llms.txt) is the UI framework used in the view templates.
+- [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/) is the UI framework used in the view templates.
 - The entrypoint of the app is in the `flaskr/__init__.py` file.
 - The authentication logic is in the `flaskr/auth.py` file.
 - The cultivation plot management logic is in the `flaskr/cultivation_plots.py` file.
