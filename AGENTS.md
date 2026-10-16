@@ -22,7 +22,7 @@ The root of the app is the `flaskr` directory.
 
 ## Never do this
 
-- Run `python` or `pip` without activating the environment first using `source .venv/bin/activate`. If
+- Run `python` or any Python CLI tool without first checking if there is a virtual environment active by inspecting the `VIRTUAL_ENV` environment variable and seeing if the value of the variable matches with the project path. If there is not virtual environment active, activate it with the command `source .venv/bin/activate`. If
   the `.venv` file does not exist just create it using `python3 -m venv .venv`.
 - Commit the `.env` file.
 - Commit API keys or any other sensitive information.
