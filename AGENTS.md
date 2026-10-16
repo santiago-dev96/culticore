@@ -19,6 +19,7 @@ The root of the app is the `flaskr` directory.
 - The database schema is defined in the `flaskr/schema.sql` file.
 - The tool to format Python code is [Black](https://black.readthedocs.io/).
 - The tool to lint Python code is [Ruff](https://docs.astral.sh/ruff/).
+- The tool to run the unit tests is [pytest](https://docs.pytest.org/en/stable/).
 
 ## Never do this
 
