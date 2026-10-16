@@ -221,7 +221,7 @@ def change_password(id):
         return render_template('/auth/change_password.html.jinja', user=g.user), 400
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(new_password), id)) # type: ignore
+    cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(new_password, 'pbkdf2:sha256'), id)) # type: ignore
     db.commit()
     cursor.close()
     flash('Password changed', 'success')
