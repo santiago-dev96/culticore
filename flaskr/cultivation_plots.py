@@ -93,7 +93,7 @@ def log_cultivation_plot_operation(id):
     elif request.method == 'GET':
         return render_template('cultivation_plots/log_operation.html.jinja', cultivation_plot=cultivation_plot)
     else:
-        number_of_plants = request.form.get('number_of_plants', 0)
+        number_of_plants = request.form.get('number_of_plants') or 0
         try:
             number_of_plants = int(number_of_plants)
         except ValueError:
