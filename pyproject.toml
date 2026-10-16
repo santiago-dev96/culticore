@@ -8,3 +8,7 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "flaskr/__init__.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

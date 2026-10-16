@@ -17,6 +17,10 @@ A wep app for tracking the growth of your crops.
 4. Initialize the database with `flask --app flaskr init-db`
 5. Start the app with `flask --app flaskr run --debug`
 
+## Tests
+
+Run the test suite with `pytest`.
+
 ## License
 
 MIT licensed, check [here](./LICENSE.md).
