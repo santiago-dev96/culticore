@@ -22,10 +22,10 @@ Cultivation plot > {{ cultivation_plot.name }}
 <main class="mt-4 mt-lg-5">
 
   <div class="row row-cols-1 row-cols-lg-2 g-lg-5">
-    <div class="col col-lg-7 mx-lg-auto">
-      <h2 class="text-center">Status</h2>
+    <div class="col">
+      <h2 class="text-center my-4">Status</h2>
 
-      <table class="table mt-3">
+      <table class="table">
         <tbody>
           <tr>
             <th scope="row">Plants</th>
@@ -44,7 +44,7 @@ Cultivation plot > {{ cultivation_plot.name }}
     </div>
 
     <div class="col">
-      <h3 class="text-center">Harvest trends</h3>
+      <h2 class="text-center my-4">Harvest trends</h2>
 
       <div>
         <canvas id="harvest-chart"></canvas>
@@ -52,7 +52,7 @@ Cultivation plot > {{ cultivation_plot.name }}
     </div>
 
     <div class="col">
-      <h3 class="text-center">Water expenditure trends</h3>
+      <h2 class="text-center my-4">Water expenditure trends</h2>
 
       <div>
         <canvas id="water-spent-chart"></canvas>
@@ -60,7 +60,7 @@ Cultivation plot > {{ cultivation_plot.name }}
     </div>
 
     <div class="col">
-      <h3 class="text-center">Trends in number of plants</h3>
+      <h2 class="text-center my-4">Trends in number of plants</h2>
 
       <div>
         <canvas id="number-of-plants-chart"></canvas>
