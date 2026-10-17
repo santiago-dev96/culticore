@@ -100,16 +100,23 @@ def log_cultivation_plot_operation(id):
             flash('The number of plants must be a whole number', 'danger')
             return render_template('cultivation_plots/log_operation.html.jinja', cultivation_plot=cultivation_plot), 400
         water_spent = request.form.get('water_spent', 0.0)
+        if water_spent == '':
+            water_spent = 0.0
         try:
             water_spent = float(water_spent)
         except ValueError:
             flash('The amount of water must be a number greater than zero', 'danger')
             return render_template('cultivation_plots/log_operation.html.jinja', cultivation_plot=cultivation_plot), 400
         harvest = request.form.get('harvest', 0.0)
+        if harvest == '':
+            harvest = 0.0
         try:
             harvest = float(harvest)
         except ValueError:
             flash('The harvest must be a number greater than zero', 'danger')
+            return render_template('cultivation_plots/log_operation.html.jinja', cultivation_plot=cultivation_plot), 400
+        if number_of_plants == 0 and water_spent == 0 and harvest == 0:
+            flash('At least one operation value must be non-zero', 'danger')
             return render_template('cultivation_plots/log_operation.html.jinja', cultivation_plot=cultivation_plot), 400
         cursor = db.execute('INSERT INTO operations (number_of_plants, water_spent, harvest, cultivation_plot_id) VALUES (?, ?, ?, ?)', (number_of_plants, water_spent, harvest, id))
         cursor.close()

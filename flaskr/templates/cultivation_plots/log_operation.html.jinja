@@ -8,6 +8,7 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
 
 {% endblock %}
 
+
 {% block content %}
 
 {{ header(cultivation_plot) }}
@@ -18,32 +19,42 @@ Cultivation plot > {{ cultivation_plot.name }} > Log operation
 
   <div class="row justify-content-center">
     <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
-      <form class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
+      <form id="log-operation-form" class="border rounded p-3" method="POST" action="{{ url_for('cultivation_plots.log_cultivation_plot_operation', id=cultivation_plot['id']) }}">
         <div class="mb-3">
           <label class="form-label" for="number_of_plants">Number of plants</label>
-          <input autofocus class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants" placeholder="5">
+          <input autofocus class="form-control" type="number" min="-{{ cultivation_plot.number_of_plants }}" name="number_of_plants" id="number_of_plants">
           <div id="number_of_plants_help" class="form-text">Enter the number of plants added; use a negative number to remove plants.</div>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="water_spent">Water spent (L) <span class="text-danger">*</span></label>
-          <input class="form-control" type="number" step="0.01" name="water_spent" min="0" id="water_spent" placeholder="10.00" required>
+          <label class="form-label" for="water_spent">Water spent (L)</label>
+          <input class="form-control" type="number" step="0.01" name="water_spent" min="0" id="water_spent">
           <div id="water_spent_help" class="form-text">Enter the amount of water used in liters.</div>
         </div>
 
         <div class="mb-5">
-          <label class="form-label" for="harvest">Harvest (kg) <span class="text-danger">*</span></label>
-          <input class="form-control" type="number" step="0.01" min="0" name="harvest" id="harvest" placeholder="2.50" required>
+          <label class="form-label" for="harvest">Harvest (kg)</label>
+          <input class="form-control" type="number" step="0.01" min="0" name="harvest" id="harvest">
           <div id="harvest_help" class="form-text">Enter the harvest weight in kilograms.</div>
         </div>
 
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Log</button>
+          <button type="submit" class="btn btn-primary" disabled>Submit</button>
         </div>
       </form>
     </div>
   </div>
 
 </main>
+
+<script>
+  const form = document.getElementById('log-operation-form')
+  const inputs = form.querySelectorAll('input')
+  const submitButton = form.querySelector('button[type="submit"]')
+
+  form.addEventListener('input', () => {
+    submitButton.disabled = Array.from(inputs).every(input => input.value === '')
+  })
+</script>
 
 {% endblock %}

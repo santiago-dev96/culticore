@@ -195,6 +195,52 @@ def test_log_operation_page(authenticated_client, cultivation_plot):
 
     assert response.status_code == 200
     assert b"Log operation" in response.data
+    assert b" required" not in response.data
+    assert b'text-danger">*</span>' not in response.data
+    assert (
+        b'<button type="submit" class="btn btn-primary" disabled>Submit</button>'
+        in response.data
+    )
+    assert b"input.value === ''" in response.data
+
+
+@pytest.mark.parametrize(
+    "form_data",
+    [
+        {},
+        {"number_of_plants": "0", "water_spent": "0", "harvest": "0"},
+        {"number_of_plants": "", "water_spent": "0"},
+    ],
+)
+def test_log_operation_rejects_all_missing_or_zero_values(
+    authenticated_client, app, cultivation_plot, form_data
+):
+    response = authenticated_client.post(
+        f"/cultivation_plots/{cultivation_plot}/log_operation", data=form_data
+    )
+
+    assert response.status_code == 400
+    assert b"At least one operation value must be non-zero" in response.data
+    with app.app_context():
+        plot = (
+            get_db()
+            .execute(
+                "SELECT number_of_plants, water_spent, harvest FROM cultivation_plots WHERE id = ?",
+                (cultivation_plot,),
+            )
+            .fetchone()
+        )
+        operation_count = (
+            get_db()
+            .execute(
+                "SELECT COUNT(*) FROM operations WHERE cultivation_plot_id = ?",
+                (cultivation_plot,),
+            )
+            .fetchone()[0]
+        )
+
+    assert tuple(plot) == (5, 10.0, 2.0)
+    assert operation_count == 0
 
 
 @pytest.mark.parametrize(
@@ -274,6 +320,40 @@ def test_log_operation_creates_record_and_updates_plot_totals(
 
     assert tuple(plot) == (3, 13.5, 3.25)
     assert tuple(operation) == (-2, 3.5, 1.25)
+
+
+def test_log_operation_accepts_partial_input(
+    authenticated_client, app, cultivation_plot
+):
+    response = authenticated_client.post(
+        f"/cultivation_plots/{cultivation_plot}/log_operation",
+        data={"water_spent": "3.5"},
+    )
+
+    assert response.status_code == 302
+    with app.app_context():
+        plot = (
+            get_db()
+            .execute(
+                "SELECT number_of_plants, water_spent, harvest FROM cultivation_plots WHERE id = ?",
+                (cultivation_plot,),
+            )
+            .fetchone()
+        )
+        operation = (
+            get_db()
+            .execute(
+                """
+            SELECT number_of_plants, water_spent, harvest
+            FROM operations WHERE cultivation_plot_id = ?
+            """,
+                (cultivation_plot,),
+            )
+            .fetchone()
+        )
+
+    assert tuple(plot) == (5, 13.5, 2.0)
+    assert tuple(operation) == (0, 3.5, 0.0)
 
 
 @pytest.mark.parametrize(
