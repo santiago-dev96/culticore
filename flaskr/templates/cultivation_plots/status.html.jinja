@@ -171,18 +171,18 @@ new Chart(waterSpentCtx, {
 
 // Number of plants chart
 
+const plantOperations = opsPerDay.filter(op => op.number_of_plants !== 0)
+let numberOfPlants = 0
+
 new Chart(numberOfPlantsCtx, {
   type: 'line',
   data: {
-    labels: opsPerDay.filter(op => op.number_of_plants != 0).map(op => op.created_at.split(' ')[0]),
+    labels: plantOperations.map(op => op.created_at),
     datasets: [
       {
-        data: opsPerDay.filter(op => op.number_of_plants != 0).map((op, i, arr) => {
-          if (arr[i-1]) {
-            return arr[i-1].number_of_plants + op.number_of_plants
-          } else {
-            return op.number_of_plants
-          }
+        data: plantOperations.map(op => {
+          numberOfPlants += op.number_of_plants
+          return numberOfPlants
         }),
         borderColor: '#0d6efd'
       }
