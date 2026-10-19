@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+#
+# Git pre-commit hook.
+#
+# It checks that:
+#   1. every staged Python file passes the ruff linter,
+#   2. every staged Python file is formatted with black,
+#   3. the unit test suite passes.
+#
+# The linter and the formatter run against the content of the git index, that
+# is, against the exact bytes that are about to be committed and not against
+# the working tree. The test suite runs against the working tree.
+#
+# Install it with: bash scripts/install_hooks.sh
+# Bypass it with:  git commit --no-verify
+# Skip checks with: SKIP=lint,format,tests git commit
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+# --- output helpers ---------------------------------------------------------
+
+if [ -t 1 ]; then
+    C_RESET=$'\033[0m'
+    C_BOLD=$'\033[1m'
+    C_RED=$'\033[0;31m'
+    C_GREEN=$'\033[0;32m'
+    C_YELLOW=$'\033[0;33m'
+else
+    C_RESET=''
+    C_BOLD=''
+    C_RED=''
+    C_GREEN=''
+    C_YELLOW=''
+fi
+
+step() { printf '%s==>%s %s%s%s\n' "$C_BOLD" "$C_RESET" "$C_BOLD" "$*" "$C_RESET"; }
+pass() { printf '%s  ok%s %s\n' "$C_GREEN" "$C_RESET" "$*"; }
+fail() { printf '%sfail%s %s\n' "$C_RED" "$C_RESET" "$*" >&2; }
+warn() { printf '%swarn%s %s\n' "$C_YELLOW" "$C_RESET" "$*" >&2; }
+
+# `SKIP=lint,format,tests` disables any of the checks.
+skipped() {
+    case ",${SKIP:-}," in
+        *",$1,"*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# --- environment ------------------------------------------------------------
+
+VENV_DIR="$REPO_ROOT/.venv"
+
+if [ -d "$VENV_DIR" ]; then
+    if [ "${VIRTUAL_ENV:-}" != "$VENV_DIR" ]; then
+        # shellcheck source=/dev/null
+        source "$VENV_DIR/bin/activate"
+    fi
+elif [ -z "${VIRTUAL_ENV:-}" ]; then
+    warn "No virtual environment found at $VENV_DIR, using the tools on PATH"
+fi
+
+for tool in ruff black pytest; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        fail "'$tool' is not available"
+        fail "Install the dependencies with: pip install -r requirements.txt"
+        exit 1
+    fi
+done
+
+# --- staged files -----------------------------------------------------------
+
+STAGED_LIST="$(mktemp "${TMPDIR:-/tmp}/pre-commit-staged.XXXXXX")"
+trap 'rm -f "$STAGED_LIST"' EXIT
+
+git diff --cached --name-only --diff-filter=ACMR -z -- '*.py' >"$STAGED_LIST"
+
+if [ ! -s "$STAGED_LIST" ]; then
+    step "No staged Python files to check"
+else
+    if ! skipped lint; then
+        step "Linting the staged files with ruff"
+        lint_status=0
+        while IFS= read -r -d '' file; do
+            if ! git show ":$file" | ruff check --stdin-filename "$file" -; then
+                lint_status=1
+            fi
+        done <"$STAGED_LIST"
+        if [ "$lint_status" -ne 0 ]; then
+            fail "ruff reported problems in the staged files"
+            fail "Fix them and stage the result with: git add --update"
+            exit 1
+        fi
+        pass "The staged files are lint free"
+    fi
+
+    if ! skipped format; then
+        step "Checking the formatting of the staged files with black"
+        format_status=0
+        while IFS= read -r -d '' file; do
+            if ! git show ":$file" | black --check --diff --stdin-filename "$file" -; then
+                format_status=1
+            fi
+        done <"$STAGED_LIST"
+        if [ "$format_status" -ne 0 ]; then
+            fail "black would reformat the staged files"
+            fail "Format them and stage the result with: black <file> && git add <file>"
+            exit 1
+        fi
+        pass "The staged files are correctly formatted"
+    fi
+fi
+
+# --- unit tests -------------------------------------------------------------
+
+if ! skipped tests; then
+    step "Running the unit test suite"
+    if ! pytest -q; then
+        fail "The unit test suite failed"
+        exit 1
+    fi
+    pass "The unit test suite passed"
+fi
+
+printf '\n%sAll the checks passed%s\n' "$C_GREEN" "$C_RESET"

@@ -41,3 +41,6 @@ The root of the app is the `flaskr` directory.
 - Initialize the database: `bash scripts/init_db.sh`.
 - Generate a secret to serve as value for the `FLASK_SECRET_KEY` environment variable in the `.env` file: `python scripts/print_secret.py`.
 - Lint: `ruff check flaskr scripts`.
+- Install the git hooks: `bash scripts/install_hooks.sh`. The pre-commit hook
+  lints and checks the formatting of the staged files and runs the unit tests
+  before every commit.
