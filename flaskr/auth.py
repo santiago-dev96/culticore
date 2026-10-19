@@ -2,13 +2,21 @@ import functools
 import re
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, abort
+    Blueprint,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+    abort,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 def validate_password(password, password_confirmation):
@@ -33,7 +41,7 @@ def validate_password(password, password_confirmation):
     return None
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route("/register", methods=["GET", "POST"])
 def register():
     """Registers a user account."""
 
@@ -44,29 +52,29 @@ def register():
 
     # Validate the username
 
-    username = request.form.get('username')
+    username = request.form.get("username")
     if not username:
-        flash('The username is required', 'danger')
-        return render_template('auth/register.html.jinja', form=request.form), 400
-    if username.strip() == '':
-        flash('The username is just whitespace', 'danger')
-        return render_template('auth/register.html.jinja', form=request.form), 400
+        flash("The username is required", "danger")
+        return render_template("auth/register.html.jinja", form=request.form), 400
+    if username.strip() == "":
+        flash("The username is just whitespace", "danger")
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if len(username) < 3:
-        flash('The length of the username must be greater than 3', 'danger')
-        return render_template('auth/register.html.jinja', form=request.form), 400
+        flash("The length of the username must be greater than 3", "danger")
+        return render_template("auth/register.html.jinja", form=request.form), 400
     if len(username) > 50:
-        flash('The length of the username must be less than 50', 'danger')
-        return render_template('auth/register.html.jinja', form=request.form), 400
+        flash("The length of the username must be less than 50", "danger")
+        return render_template("auth/register.html.jinja", form=request.form), 400
 
     # Get the password, it should contain at least 1 digit, 1 letter,
     # a special character and that the password confirmation is equal
     # to the given password. The length of the password should be
     # at least 12 and at most 32.
 
-    password = request.form.get('password')
-    error_msg = validate_password(password, request.form.get('password_confirmation'))
+    password = request.form.get("password")
+    error_msg = validate_password(password, request.form.get("password_confirmation"))
     if error_msg:
-        flash(error_msg, 'danger')
+        flash(error_msg, "danger")
         return render_template("auth/register.html.jinja", form=request.form), 400
 
     # Now save the user in the database.
@@ -74,7 +82,7 @@ def register():
     db = get_db()
     cursor = db.execute(
         "INSERT INTO users (username, password_hash) VALUES (?, ?)",
-        (username, generate_password_hash(password, 'pbkdf2:sha256')), # type: ignore
+        (username, generate_password_hash(password, "pbkdf2:sha256")),  # type: ignore
     )
     db.commit()
     user_id = cursor.lastrowid
@@ -116,10 +124,7 @@ def login():
     # Now try to get the user and update the session.
 
     db = get_db()
-    cursor = db.execute(
-        "SELECT * FROM users WHERE username = ?",
-        (username,)
-    )
+    cursor = db.execute("SELECT * FROM users WHERE username = ?", (username,))
     some_user = cursor.fetchone()
     cursor.close()
     if not some_user:
@@ -135,20 +140,19 @@ def login():
     return redirect(url_for("cultivation_plots.index"))
 
 
-
 @bp.before_app_request
 def load_user():
-    user_id = session.get('user_id')
+    user_id = session.get("user_id")
 
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-                'SELECT * FROM users WHERE id = ?', (user_id,)
-                ).fetchone()
+        g.user = (
+            get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+        )
 
 
-@bp.route('/logout', methods=['POST'])
+@bp.route("/logout", methods=["POST"])
 def logout():
     """Logs out the user."""
 
@@ -163,79 +167,78 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(*args, **kwargs):
         if g.user is None:
-            return redirect(
-                    url_for("auth.login",
-                            redirect_to=request.full_path)
-                    )
+            return redirect(url_for("auth.login", redirect_to=request.full_path))
         return view(*args, **kwargs)
 
     return wrapped_view
 
 
-@bp.route('/users/<int:id>')
+@bp.route("/users/<int:id>")
 @login_required
 def account(id):
-    if id != g.user['id']:
+    if id != g.user["id"]:
         return abort(401)
-    return render_template('/auth/account.html.jinja', user=g.user)
+    return render_template("/auth/account.html.jinja", user=g.user)
 
 
-@bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route("/users/<int:id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_account(id):
-    if id != g.user['id']:
+    if id != g.user["id"]:
         return abort(401)
-    if request.method == 'GET':
-        return render_template('/auth/edit.html.jinja', user=g.user)
-    username = request.form.get('username')
-    if not username or username.strip() == '':
-        flash('The username is required', 'danger')
-        return render_template('/auth/edit.html.jinja', user=g.user), 400
+    if request.method == "GET":
+        return render_template("/auth/edit.html.jinja", user=g.user)
+    username = request.form.get("username")
+    if not username or username.strip() == "":
+        flash("The username is required", "danger")
+        return render_template("/auth/edit.html.jinja", user=g.user), 400
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('UPDATE users SET username = ? WHERE id = ?', (username, id))
+    cursor.execute("UPDATE users SET username = ? WHERE id = ?", (username, id))
     db.commit()
     cursor.close()
-    flash('Account updated', 'success')
-    return redirect(url_for('auth.account', id=id))
+    flash("Account updated", "success")
+    return redirect(url_for("auth.account", id=id))
 
 
-@bp.route('/users/<int:id>/change_password', methods=['GET', 'POST'])
+@bp.route("/users/<int:id>/change_password", methods=["GET", "POST"])
 @login_required
 def change_password(id):
-    if id != g.user['id']:
+    if id != g.user["id"]:
         return abort(401)
-    if request.method == 'GET':
-        return render_template('/auth/change_password.html.jinja', user=g.user)
-    current_password = request.form.get('current_password')
+    if request.method == "GET":
+        return render_template("/auth/change_password.html.jinja", user=g.user)
+    current_password = request.form.get("current_password")
     if not current_password:
-        flash('The current password is required', 'danger')
-        return render_template('/auth/change_password.html.jinja', user=g.user), 400
-    if not check_password_hash(g.user['password_hash'], current_password):
-        flash('The current password is wrong', 'danger')
-        return render_template('/auth/change_password.html.jinja', user=g.user), 401
-    new_password = request.form.get('password')
-    error_msg = validate_password(new_password, request.form.get('password_confirmation'))
+        flash("The current password is required", "danger")
+        return render_template("/auth/change_password.html.jinja", user=g.user), 400
+    if not check_password_hash(g.user["password_hash"], current_password):
+        flash("The current password is wrong", "danger")
+        return render_template("/auth/change_password.html.jinja", user=g.user), 401
+    new_password = request.form.get("password")
+    error_msg = validate_password(
+        new_password, request.form.get("password_confirmation")
+    )
     if error_msg:
-        flash(error_msg, 'danger')
-        return render_template('/auth/change_password.html.jinja', user=g.user), 400
+        flash(error_msg, "danger")
+        return render_template("/auth/change_password.html.jinja", user=g.user), 400
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(new_password, 'pbkdf2:sha256'), id)) # type: ignore
+    cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (generate_password_hash(new_password, "pbkdf2:sha256"), id))  # type: ignore
     db.commit()
     cursor.close()
-    flash('Password changed', 'success')
-    return redirect(url_for('auth.account', id=id))
+    flash("Password changed", "success")
+    return redirect(url_for("auth.account", id=id))
 
 
-@bp.route('/users/<int:id>/delete', methods=['POST'])
+@bp.route("/users/<int:id>/delete", methods=["POST"])
 @login_required
 def delete_account(id):
-    if id != g.user['id']:
+    if id != g.user["id"]:
         return abort(401)
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('DELETE FROM users WHERE id = ?', (id,))
+    cursor.execute("DELETE FROM users WHERE id = ?", (id,))
     db.commit()
     cursor.close()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))
