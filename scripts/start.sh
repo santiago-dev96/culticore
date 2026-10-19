@@ -3,4 +3,4 @@
 set -e
 
 source ./.venv/bin/activate
-flask --app flaskr run --debug
+flask --app flaskr run --debug -p 8080
