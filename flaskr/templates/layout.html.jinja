@@ -14,6 +14,12 @@
     <!-- Page title -->
     <title>CultiCore > {% block title %}{% endblock %}</title>
 
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
     <!-- Per page scripts, should be deferred. -->
     {% block scripts %}{% endblock %}
 
@@ -27,7 +33,7 @@
       <div class="container">
 
         <a class="navbar-brand" href="{{ url_for('cultivation_plots.index') }}">
-          <img src="{{ url_for('static', filename='culticore-logo.svg') }}" alt="" width="36" height="36" class="me-2">
+          <img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="36" height="36" class="me-2">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler" aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
