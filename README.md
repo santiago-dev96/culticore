@@ -2,6 +2,21 @@
 
 A wep app for tracking the growth of your crops.
 
+Think about it like this: you have some land with some
+plants of some type in a delimited area; you give the
+area a name you can remember, and you know how many
+productive plants you have in there. Now you want to
+know how much water you spend keeping the plants
+alive and productive, or how much production you
+get from the area. Maybe you expand or shrink the
+cultivation plot. For all of these problems, you
+could use pen and paper, but having a dashboard
+with all the information you need at a glance is
+better. For now you have to provide the data
+manually every day or so, but it might be possible
+to automate everything with the right devices, if you
+can afford that.
+
 ## Technology stack
 
 - Python
